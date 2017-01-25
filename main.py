@@ -21,19 +21,21 @@ import webapp2
 page_header = """
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel='stylesheet' type='text/css' href='/static/normalize.css'/>
-    <link rel='stylesheet' type='text/css' href='/static/user-signup.css'/>
-    <title>FlickList</title>
-</head>
-<body>
-    <h1>Sign Up</h1><div class="container">
+    <head>
+        <link rel='stylesheet' type='text/css' href='/static/user-signup.css'/>
+        <title>Signup</title>
+    </head>
+    <body>
+        <h1>Sign Up</h1>
+        <div class="container">
+            <form>
 """
 
 # html boilerplate for the bottom of every page
 page_footer = """
-</div>
-</body>
+            </form>
+        </div>
+    </body>
 </html>
 """
 
@@ -41,7 +43,39 @@ class MainHandler(webapp2.RequestHandler):
     """ for requests comming in to root
     """
     def get(self):
-        content = page_header + 'Hello world!' + page_footer
+        user_name = """
+        <label for='user_name'>User Name:&nbsp;
+        </label>
+        <input name='user_name' id='user_name' />
+        <br>
+        """
+
+        password = """
+        <label for='password'>Password:&nbsp;
+        </label>
+        <input name='password' id='password' />
+        <br>
+        """
+
+        verify_pw = """
+        <label for='verify_pw'>Verify:&nbsp;
+        </label>
+        <input name='verify_pw' id='verify_pw' />
+        <br>
+        """
+
+        email = """
+        <label for='email'>Email (Optonal):&nbsp;
+        </label>
+        <input name='email' id='email' />
+        <br>
+        """
+
+        signup = """
+        <input name='signup' id='signup' type='submit' value='Signup'/>
+        """
+        content = page_header + user_name + password + verify_pw + email +\
+        signup + page_footer
         self.response.write(content)
 
 app = webapp2.WSGIApplication([
