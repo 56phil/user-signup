@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2007 Google Inc.
 #
@@ -23,6 +24,7 @@ page_header = """
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel='stylesheet' type='text/css' href='/static/normalize.css'/>
         <link rel='stylesheet' type='text/css' href='/static/user-signup.css'/>
         <title>Signup</title>
     </head>
@@ -42,7 +44,7 @@ PW_RE = re.compile(r"^.{3,20}$")
 f_user_name = """
 <div class="row">
 <label for='user_name'>User Name:&nbsp;</label>
-<input name='user_name' id='user_name' value=""/>
+<input name='user_name' id='user_name' value="" required/>
 <span class="noerr">Not a valid user name</span>
 </div>
 """
@@ -51,7 +53,7 @@ f_password = """
 <br>
 <div class="row">
 <label for='password'>Password:&nbsp;</label>
-<input name='password' id='password' type="password" value=""/>
+<input name='password' id='password' type="password" value="" required/>
 <span class="noerr">Not a valid user password</span>
 </div>
 """
@@ -60,7 +62,7 @@ f_verify_pw = """
 <br>
 <div class="row">
 <label for='verify_pw'>Verify:&nbsp;</label>
-<input name='verify_pw' id='verify_pw' type="password" value=""/>
+<input name='verify_pw' id='verify_pw' type="password" value="" required/>
 <span class="noerr">Passwords don't match.</span>
 </div>
 """
@@ -69,7 +71,7 @@ f_email = """
 <br>
 <div class="row">
 <label for='email'>Email (Optonal):&nbsp;</label>
-<input name='email' id='email' value=""/>
+<input name='email' id='email' value="" type=email/>
 <span class="noerr">Not a valid user email</span>
 </div>
 """
@@ -103,7 +105,8 @@ class Validate(webapp2.RequestHandler):
         email = self.request.get("email")
         n_error = False
 
-        content = page_header + """<h1>Sign Up</h1><div class="err_container"><form action="/sub" method="post">"""
+        content = page_header + """<h1>Sign Up</h1><div class="err_container">
+        <form action="/sub" method="post">"""
 
         e_user_name = f_user_name
         if not is_valid_user_name(user_name):
@@ -134,9 +137,11 @@ class Validate(webapp2.RequestHandler):
         content += e_email
 
         if n_error:
-            self.response.write(content + f_signup + """</form></div>""" + page_footer)
+            self.response.write(content + f_signup + """</form></div>""" +\
+                    page_footer)
         else:
-            content = page_header + """<span class="welcome">Welcome """ + user_name + "</span>" + page_header
+            content = page_header + """<span class="welcome">
+            Welcome """ + user_name + "</span>" + page_header
             self.response.write(content)
 
 
@@ -144,7 +149,8 @@ class MainHandler(webapp2.RequestHandler):
     """ for requests comming in to root
     """
     def get(self):
-        content = page_header + """<h1>Sign Up</h1><div class="err_container"><form action="/sub" method="post">""" + \
+        content = page_header + """<h1>Sign Up</h1><div class="err_container">
+        <form action="/sub" method="post">""" + \
                 f_user_name + f_password + f_verify_pw + f_email +\
                 f_signup + """</form></div>""" + page_footer
         self.response.write(content)
